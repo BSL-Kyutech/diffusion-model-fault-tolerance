@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import time
 from typing import List, Sequence, Tuple
-
+import os
 import numpy as np
 import pandas as pd
 import rclpy
@@ -43,8 +43,11 @@ def main():
     pub = PressurePublisher()
     mocap = MocapSubscriber(node)
     
-    base_dir = "diffusion_model_fault_tolerance/"
-    model_dir = base_dir + "model"
+    # パスの設定
+    HERE = os.path.dirname(os.path.abspath(__file__)) # .../experiment
+    PKG_DIR = os.path.abspath(os.path.join(HERE, "..")) # .../diffusion_model_fault_tolerance
+    model_dir = os.path.join(PKG_DIR, "model")
+    print("model_dir(abs) =", model_dir)
     # モデルと目標軌道の提示
     diffusion_model = Diffuser()
     diffusion_model.load_dir(model_dir)
