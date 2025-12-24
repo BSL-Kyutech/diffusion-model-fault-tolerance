@@ -8,7 +8,7 @@ import pandas as pd
 import rclpy
 from rclpy.node import Node
 from diffusion_model_fault_tolerance.trajectory.target_circle import generate_circle
-from robotdiffusion.diffuser import Generator
+from robotdiffusion.diffuser import Diffuser
 from diffusion_model_fault_tolerance.io.pressure_publisher import PressurePublisher
 from diffusion_model_fault_tolerance.io.mocap_subscriber import MocapSubscriber
 
@@ -44,7 +44,7 @@ def main():
     mocap = MocapSubscriber(node)
     
     # モデルと目標軌道の提示
-    diffusion_model = Generator()
+    diffusion_model = Diffuser()
     diffusion_model.load_dir("model")
     X, Y, Z = generate_circle()
     
