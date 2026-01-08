@@ -6,6 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 import rclpy
+from pathlib import Path
 from rclpy.node import Node
 from diffusion_model_fault_tolerance.trajectory.target_circle import generate_circle
 from robotdiffusion.diffuser import Diffuser
@@ -44,10 +45,17 @@ def main():
     mocap = MocapSubscriber(node)
     
     # パスの設定
-    HERE = os.path.dirname(os.path.abspath(__file__)) # .../experiment
-    PKG_DIR = os.path.abspath(os.path.join(HERE, "..")) # .../diffusion_model_fault_tolerance
-    model_dir = os.path.join(PKG_DIR, "model")
-    print("model_dir(abs) =", model_dir)
+    # このファイル（gen_circle.py）の場所
+    experiment_dir = Path(__file__).resolve().parent
+
+    # Pythonパッケージのルート
+    package_dir = experiment_dir.parent
+
+    # 学習済みモデルディレクトリ
+    model_dir = package_dir / "model"
+
+    print(f"model_dir = {model_dir}")
+    
     # モデルと目標軌道の提示
     diffusion_model = Diffuser()
     diffusion_model.load_dir(model_dir)
