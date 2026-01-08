@@ -12,6 +12,7 @@ from diffusion_model_fault_tolerance.trajectory.target_circle import generate_ci
 from robotdiffusion.diffuser import Diffuser
 from diffusion_model_fault_tolerance.io.pressure_publisher import PressurePublisher
 from diffusion_model_fault_tolerance.io.mocap_subscriber import MocapSubscriber
+from ament_index_python.packages import get_package_share_directory
 
 def pressure40_to_list(output) -> List[int]:
     # diffusion_model.genの返り値を長さ40のlist[int]に整形する．
@@ -44,18 +45,12 @@ def main():
     pub = PressurePublisher()
     mocap = MocapSubscriber(node)
     
-    # パスの設定
-    # このファイル（gen_circle.py）の場所
-    experiment_dir = Path(__file__).resolve().parent
+    # パスの設定（ROS2のinstall環境でも確実）
+    PKG_NAME = "diffusion_model_fault_tolerance"  # ← package.xml の <name> と一致させる
 
-    # Pythonパッケージのルート
-    package_dir = experiment_dir.parent
-
-    # 学習済みモデルディレクトリ
-    model_dir = package_dir / "model"
-
+    model_dir = Path(get_package_share_directory(PKG_NAME)) / "mode"
     print(f"model_dir = {model_dir}")
-    
+
     # モデルと目標軌道の提示
     diffusion_model = Diffuser()
     diffusion_model.load_dir(model_dir)
