@@ -11,7 +11,7 @@ from pathlib import Path
 from rclpy.node import Node
 from datetime import datetime
 from tm_diffusion_ftc.trajectory.target_circle import generate_circle
-from robotdiffusion.diffuser import Diffuser
+from robotdiffusion.control_net import ControlNet 
 from tm_diffusion_ftc.io.pressure_publisher import PressurePublisher
 from tm_diffusion_ftc.io.mocap_subscriber import MocapSubscriber
 from ament_index_python.packages import get_package_share_directory
@@ -62,7 +62,7 @@ def main():
     print(f"model_dir = {model_dir}")
 
     # モデルと目標軌道の提示
-    diffusion_model = Diffuser()
+    diffusion_model = ControlNet()
     diffusion_model.load_dir(model_dir)
     X, Y, Z = generate_circle()
     print(f"x, y, z lengths: {len(X)}, {len(Y)}, {len(Z)}")
